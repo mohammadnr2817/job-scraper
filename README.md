@@ -4,7 +4,7 @@
 
 **کاملاً رایگانه و هیچ نیازی به خرید سرور یا هاست نداری.** ربات روی GitHub Actions به صورت خودکار اجرا میشه.
 
-> 💡 این ربات الان روی **SEO** تنظیم شده، ولی با چند تغییر ساده می‌تونی برای **هر فیلد شغلی** ازش استفاده کنی (توسعه‌دهنده، دیزاینر، مارکتینگ، دیتا، DevOps و...). [بخش سفارشی‌سازی](#-سفارشیسازی-برای-فیلدهای-شغلی-دیگه) رو ببین.
+> 💡 این ربات الان روی **SEO** تنظیم شده، ولی با چند تغییر ساده می‌تونی برای **هر فیلد شغلی** ازش استفاده کنی.
 
 ---
 
@@ -13,92 +13,206 @@
 - 🔍 هر روز از **۶+ سایت کاریابی** آگهی‌های ریموت رو جمع می‌کنه
 - 📊 آگهی‌ها رو **امتیازدهی** می‌کنه و فقط مرتبط‌ترین‌ها رو می‌فرسته
 - ⛔ آگهی‌های نامرتبط رو **خودکار فیلتر** می‌کنه
-- 🧠 با **هوش مصنوعی** برای هر آگهی Cover Letter اختصاصی می‌نویسه (اختیاری)
+- 🤖 هر آگهی یک دکمه **"ChatGPT Cover Letter"** داره — کلیک → باز شدن ChatGPT با پرامپت آماده
 - ⏰ هر روز صبح **خودش اجرا میشه** — کاری نباید بکنی
 
 ---
 
-## 🚀 آموزش راه‌اندازی قدم به قدم (فقط ۵ دقیقه)
+## 🚀 راه‌اندازی قدم به قدم
 
-برای راه‌اندازی این ربات **اصلاً نیازی نیست برنامه‌نویس باشی**. فقط این ۵ قدم رو به ترتیب انجام بده:
+### 📌 قدم ۱: Fork کردن پروژه
 
----
-
-### 📌 قدم اول: پروژه رو برای خودت کپی کن (Fork)
-
-اون بالا سمت راست همین صفحه، یک دکمه هست به اسم **Fork**. روش کلیک کن و بعد دکمه سبز رنگ **Create Fork** رو بزن.
-
-یه کپی از این ربات توی اکانت GitHub خودت ساخته میشه. از الان به بعد روی اون کپی کار می‌کنیم.
+1. روی دکمه **Fork** بالا سمت راست کلیک کن
+2. دکمه سبز **Create Fork** رو بزن
+3. حالا یک کپی از پروژه توی اکانت GitHub خودت داری
 
 ---
 
-### 📌 قدم دوم: ربات تلگرامت رو بساز
+### 📌 قدم ۲: ساخت ربات تلگرام
 
-ما به یه ربات تلگرام نیاز داریم تا پیام‌ها رو برات بفرسته.
+**۲.۱ ساخت ربات:**
 
-1. تو تلگرام به `@BotFather` پیام بده
-2. بنویس `/newbot` و یه اسم و username برای رباتت انتخاب کن
-3. یه متن طولانی بهت میده که توش **Token** نوشته شده (شبیه `123456:ABC-DEF...`). **کپیش کن و یه جا نگهش دار**
-4. حالا به `@userinfobot` تو تلگرام پیام بده
-5. بهت یه عدد میده به اسم **Id** (مثل `123456789`). **اینو هم کپی کن**
+1. تو تلگرام، `BotFather@` رو سرچ کن و باهاش پیام بده
+2. بنویس: `/newbot`
+3. یک اسم برای رباتت انتخاب کن (مثلاً: `SEO Job Finder`)
+4. یک username برای رباتت انتخاب کن (باید با `bot` تموم بشه، مثلاً: `seo_job_finder_bot`)
+5. BotFather یک **Token** بهت میده شبیه این: `7812345678:AAFxxxxxxxxxxxxxxxxxxxxxxxxxx`
+   - **این Token رو کپی کن!**
 
----
+**۲.۲ گرفتن Chat ID:**
 
-### 📌 قدم سوم: ویزارد تنظیمات (Setup Wizard)
+1. تو تلگرام، `userinfobot@` رو سرچ کن و باهاش پیام بده
+2. بهت یک عدد میده (مثلاً: `123456789`)
+   - **این Chat ID رو هم کپی کن!**
 
-به جای اینکه تنظیمات رو دستی و سخت انجام بدی، از فایلی که برات آماده کردیم استفاده کن:
+**اگه می‌خوای آگهی‌ها بیاد توی یک کانال تلگرام:**
 
-1. توی همین صفحه، فایل `setup_wizard.html` رو پیدا کن و **دانلودش** کن
-2. با مرورگر (Chrome یا Firefox) **بازش** کن
-3. **Token ربات** و **Chat ID** (که قدم دوم گرفتی) رو وارد کن
-4. بقیه گزینه‌ها اختیاریه — می‌تونی فعلاً خالی بذاری
-5. روی دکمه **⚙️ تولید Secrets** کلیک کن
-6. دکمه **📋 کپی همه** رو بزن
-
----
-
-### 📌 قدم چهارم: وارد کردن تنظیمات در GitHub
-
-حالا باید اون چیزی که کپی کردی رو به GitHub بدی تا ربات بتونه کار کنه:
-
-1. برو به صفحه ریپوی خودت (همون Fork)
-2. تب **Settings** (بالای صفحه) رو بزن
-3. از منوی سمت چپ: **Secrets and variables** → **Actions**
-4. دکمه سبز **New repository secret** رو بزن
-5. دونه‌دونه اطلاعاتی که ویزارد بهت داد رو اینجا وارد کن:
-   - اسم: `TELEGRAM_BOT_TOKEN` → مقدار: Token رباتت
-   - اسم: `TELEGRAM_CHAT_ID` → مقدار: عدد Chat ID
-
-> 💡 اگه ویزارد چیزای دیگه هم بهت داد (مثل AI_PROVIDER)، اونا رو هم همینجا اضافه کن.
+1. برو به کانالت و روی اسم کانال کلیک کن
+2. بخش **Info** → **Management** → **Add Administrator**
+3. رباتت رو اضافه کن
+4. به رباتت دسترسی **Post Messages** بده
+5. از کانالت یک پیام بفرست به `@userinfobot` یا `@raw_userinfobot`
+6. Chat ID کانال رو بهت میده (شبیه: `-1001234567890`)
 
 ---
 
-### 📌 قدم پنجم: روشن کردن ربات!
+### 📌 قدم ۳: وارد کردن تنظیمات در GitHub
 
-تنظیمات تموم شد! الان ربات رو روشن کن:
+**۳.۱ رفتن به بخش Secrets:**
 
-1. برو به تب **Actions** (بالای صفحه، کنار Pull requests)
-2. یه پیام سبز میبینی — روش کلیک کن تا فعال بشه
+1. توی صفحه ریپوی خودت، روی تب **Settings** کلیک کن
+2. از منوی سمت چپ: **Secrets and variables** → **Actions** → **New repository secret**
+
+**۳.۲ اضافه کردن هر Secret:**
+
+برای هر کدام از این موارد، دکمه **New repository secret** رو بزن و Name و Value رو وارد کن:
+
+| Name | Value | توضیح |
+|------|-------|-------|
+| `TELEGRAM_BOT_TOKEN` | Token ربات (از BotFather) | **اجباری** |
+| `TELEGRAM_CHAT_ID` | Chat ID عددی یا کانال | **اجباری** |
+| `RAPIDAPI_KEY` | کلید RapidAPI (اختیاری) | برای JSearch |
+| `CF_WORKER_URL` | آدرس Cloudflare Worker (اختیاری) | برای Remote OK + We Work Remotely |
+| `USER_SKILLS` | مهارت‌های تو (اختیاری) | مثلاً: `python, wordpress, seo` |
+| `CL_PROMPT` | پرامپت Cover Letter (اختیاری) | پیش‌فرض: prompt.txt |
+| `GSHEET_CREDENTIALS` | JSON سرویس اکانت گوگل (اختیاری) | برای ذخیره در شیت |
+| `GSHEET_ID` | ID شیت گوگل (اختیاری) | برای ذخیره در شیت |
+| `ADZUNA_APP_ID` | App ID آدزونا (اختیاری) | سایت کاریابی |
+| `ADZUNA_API_KEY` | API Key آدزونا (اختیاری) | سایت کاریابی |
+
+---
+
+### 📌 قدم ۴: فعال کردن GitHub Actions
+
+1. برو به تب **Actions** (کنار Pull requests)
+2. روی پیام سبز **I understand my workflows...** کلیک کن
 3. از منوی سمت چپ، روی **Job Search Bot** کلیک کن
-4. سمت راست، دکمه **Run workflow** رو بزن و بعد دکمه سبز رو بزن
+4. سمت راست، دکمه **Run workflow** رو بزن
+5. دکمه سبز **Run workflow** رو دوباره بزن
 
-✅ **تمام!** بعد ۱-۲ دقیقه اولین آگهی‌های کاریابی توی ربات تلگرامت میاد.
+✅ **بعد ۱-۲ دقیقه اولین آگهی‌ها توی ربات تلگرامت میاد!**
 
-از فردا، ربات **خودش هر روز صبح اتوماتیک** اجرا میشه.
+از فردا، ربات **هر روز صبح اتوماتیک** اجرا میشه.
+
+---
+
+## ☁️ قدم ۵: راه‌اندازی Cloudflare Worker (اختیاری)
+
+اگه این مرحله رو انجام بدی، آگهی‌های **Remote OK** و **We Work Remotely** هم اضافه میشه.
+
+**۵.۱ ساخت اکانت Cloudflare:**
+
+1. برو به [dash.cloudflare.com](https://dash.cloudflare.com)
+2. با ایمیلت ثبت‌نام کن (رایگان)
+
+**۵.۲ ساخت Worker:**
+
+1. توی داشبورد Cloudflare، از منوی سمت چپ: **Workers & Pages**
+2. دکمه **Create Application** رو بزن
+3. **Create Worker** رو انتخاب کن
+4. یک اسم برای Worker بذار (مثلاً: `seo-job-bot`)
+5. دکمه **Deploy** رو بزن
+
+**۵.۳ وارد کردن کد:**
+
+1. روی **Edit Code** کلیک کن
+2. همه کدهای داخل ویرایشگر رو پاک کن
+3. فایل `cf_worker.js` از این ریپو رو باز کن و **همه محتواش** رو کپی کن
+4. کد رو paste کن
+5. دکمه **Save and Deploy** رو بزن
+
+**۵.۴ کپی کردن URL:**
+
+1. بعد از Deploy شدن، یک URL میبینی شبیه:
+   `https://seo-job-bot.your-subdomain.workers.dev`
+2. این URL رو کپی کن
+3. توی GitHub Secrets اضافه کن:
+   - Name: `CF_WORKER_URL`
+   - Value: `https://seo-job-bot.your-subdomain.workers.dev/jobs`
+
+---
+
+## 📊 قدم ۶: راه‌اندازی Google Sheets (اختیاری)
+
+اگه می‌خوای همه آگهی‌ها توی یک شیت گوگل ذخیره بشن:
+
+**۶.۱ ساخت پروژه در Google Cloud:**
+
+1. برو به [console.cloud.google.com](https://console.cloud.google.com)
+2. دکمه **Select a project** → **New Project**
+3. یک اسم بذار و **Create** بزن
+
+**۶.۲ فعال کردن APIها:**
+
+1. از منوی سمت چپ: **APIs & Services** → **Library**
+2. این دو تا رو جستجو کن و فعال کن:
+   - **Google Sheets API**
+   - **Google Drive API**
+
+**۶.۳ ساخت Service Account:**
+
+1. **APIs & Services** → **Credentials** → **Create Credentials** → **Service Account**
+2. یک اسم بذار و **Create and continue** بزن
+3. نقش رو **Editor** بذار و **Done** بزن
+4. روی سرویس اکانتت کلیک کن
+5. تب **Keys** → **Add Key** → **Create new key** → **JSON** → **Create**
+6. فایل JSON دانلود میشه — **محتواش رو کپی کن**
+
+**۶.۴ ساخت شیت گوگل:**
+
+1. برو به [sheets.google.com](https://sheets.google.com)
+2. دکمه **+** رو بزن تا یک شیت جدید بسازه
+3. یک اسم بذار (مثلاً: `SEO Jobs`)
+4. دکمه **Share** رو بزن
+5. ایمیل Service Account رو وارد کن (از فایل JSON، فیلد `client_email`)
+6. نقش رو **Editor** بذار و **Done** بزن
+
+**۶.۵ پیدا کردن ID شیت:**
+
+1. از URL شیت، بخش بعد از `/d/` تا قبل از `/edit` رو کپی کن
+   - مثلاً URL هست: `https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OlbNiP_Tr/edit`
+   - پس ID هست: `1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OlbNiP_Tr`
+
+**۶.۶ اضافه کردن Secrets:**
+
+توی GitHub Secrets اضافه کن:
+- Name: `GSHEET_CREDENTIALS` → Value: کل محتوای فایل JSON
+- Name: `GSHEET_ID` → Value: ID شیت
+
+---
+
+## 🤖 Cover Letter با ChatGPT (رایگان!)
+
+هر آگهی یک دکمه **"ChatGPT Cover Letter"** داره:
+
+1. روی دکمه کلیک کن
+2. ChatGPT باز میشه با پرامپت آماده
+3. شما توی اکانت خودت Cover Letter می‌نویسی
+
+**نیازی به API key نیست!** از اکانت رایگان ChatGPT خودت استفاده می‌کنی.
+
+### سفارشی‌سازی پرامپت
+
+فایل `prompt.txt` رو ویرایش کن:
+
+```
+Write a professional, concise cover letter for the '{title}' position at '{company}'.
+Focus on my technical SEO skills.
+
+Job link: {url}
+
+Keep it under 250 words, be targeted to the job requirements, and end with a call to action.
+```
+
+متغیرهای موجود: `{title}`، `{company}`، `{url}`
 
 ---
 
 ## 🎯 سفارشی‌سازی برای فیلدهای شغلی دیگه
 
-این ربات الان روی SEO تنظیمه، ولی **فقط با تغییر ۴ بخش ساده** تو فایل `bot.py` می‌تونی برای هر فیلد شغلی ازش استفاده کنی.
+### ۱. عبارات جستجو (`JSEARCH_QUERIES`)
 
-فایل `bot.py` رو باز کن و این بخش‌ها رو تغییر بده:
-
----
-
-### ۱. عبارات جستجو (`JSEARCH_QUERIES`) — خط ~۱۲۲
-
-اینا عباراتی هستن که ربات باهاشون آگهی جستجو می‌کنه. به زبان انگلیسی بنویس:
+فایل `bot.py` رو باز کن و بخش `JSEARCH_QUERIES` رو تغییر بده:
 
 ```python
 # نمونه SEO (پیش‌فرض):
@@ -114,57 +228,25 @@ JSEARCH_QUERIES = {
     2: ["Vue.js Developer remote", "JavaScript Developer remote"],
     3: ["UI Developer remote", "Frontend Engineer remote"],
 }
-
-# نمونه Data Analyst:
-JSEARCH_QUERIES = {
-    1: ["Junior Data Analyst remote", "Data Analyst Python remote"],
-    2: ["Business Intelligence Analyst remote", "SQL Analyst remote"],
-    3: ["Data Visualization Analyst remote", "Excel Analyst remote"],
-}
-
-# نمونه Graphic Designer:
-JSEARCH_QUERIES = {
-    1: ["Graphic Designer remote", "UI Designer remote"],
-    2: ["Visual Designer remote", "Brand Designer remote"],
-    3: ["Figma Designer remote", "Creative Designer remote"],
-}
 ```
 
-> 💡 **نکته:** عدد ۱ = اولویت بالا (هر روز اجرا میشه)، عدد ۳ = اولویت پایین (فقط روزهای زوج)
+> 💡 عدد ۱ = هر روز، عدد ۲ = هر روز، عدد ۳ = فقط روزهای زوج
 
----
+### ۲. مهارت‌های شما (`USER_SKILLS`)
 
-### ۲. مهارت‌های شما (`USER_SKILLS`) — آسون‌ترین راه!
-
-**بدون نیاز به تغییر کد!** فقط یه GitHub Secret اضافه کن:
-
-- اسم: `USER_SKILLS`
-- مقدار: مهارت‌هات رو comma-separated بنویس
+توی GitHub Secrets یک Secret جدید بساز:
+- Name: `USER_SKILLS`
+- Value: مهارت‌هات رو comma-separated بنویس
 
 ```
-# نمونه Front-end:
-react, javascript, typescript, css, html, tailwind, next.js, git, figma, responsive design
-
-# نمونه Data Analyst:
-python, sql, excel, power bi, tableau, pandas, statistics, data visualization
-
-# نمونه DevOps:
-docker, kubernetes, aws, terraform, ci/cd, linux, ansible, jenkins, monitoring
-
-# نمونه Graphic Designer:
-figma, photoshop, illustrator, after effects, branding, typography, ui design
+react, javascript, typescript, css, html, tailwind, next.js, git, figma
 ```
 
-اگه `USER_SKILLS` رو ست نکنی، ربات از مهارت‌های پیش‌فرض (SEO) استفاده می‌کنه.
+### ۳. کلمات ممنوعه (`BLACKLIST_KEYWORDS`)
 
----
-
-### ۳. کلمات ممنوعه (`BLACKLIST_KEYWORDS`) — خط ~۱۴۲
-
-آگهی‌هایی که این کلمات رو دارن **حذف** میشن. بر اساس فیلد خودت تغییرش بده:
+آگهی‌هایی که این کلمات رو دارن حذف میشن:
 
 ```python
-# نمونه عمومی (برای همه فیلدها مناسبه):
 BLACKLIST_KEYWORDS = [
     "us residents only", "must reside in us", "must be located in us",
     "must be based in the us", "must be authorized to work in the us",
@@ -172,25 +254,13 @@ BLACKLIST_KEYWORDS = [
     "10+ years", "8+ years", "7+ years",
     "senior", "lead", "staff", "principal", "director", "head of", "vp of",
 ]
-
-# نمونه Junior Developer (فیلتر پوزیشن‌های سنیور):
-BLACKLIST_KEYWORDS = [
-    "us residents only", "must reside in us",
-    "must be authorized to work in the us",
-    "senior developer", "staff engineer", "principal engineer",
-    "lead developer", "architect", "director", "vp of",
-    "10+ years", "8+ years", "7+ years", "5+ years",
-]
 ```
 
----
+### ۴. کلمات تقویت‌کننده (`BOOST_KEYWORDS`)
 
-### ۴. کلمات تقویت‌کننده (`BOOST_KEYWORDS`) — خط ~۱۵۳
-
-آگهی‌هایی که این کلمات رو دارن **امتیاز بیشتر** می‌گیرن (عدد = امتیاز اضافه):
+آگهی‌هایی که این کلمات رو دارن امتیاز بیشتر می‌گیرن:
 
 ```python
-# نمونه SEO (پیش‌فرض):
 BOOST_KEYWORDS = {
     "technical seo": 20, "python": 18, "wordpress": 15,
     "junior": 18, "entry level": 15, "associate": 12,
@@ -198,127 +268,8 @@ BOOST_KEYWORDS = {
     "on-page": 10, "part-time": 8, "contract": 5,
     "remote-first": 8, "async": 5, "flexible": 4,
 }
-
-# نمونه Front-end Developer:
-BOOST_KEYWORDS = {
-    "react": 20, "next.js": 18, "typescript": 15,
-    "junior": 18, "entry level": 15, "associate": 12,
-    "frontend": 12, "front-end": 12, "ui developer": 10,
-    "tailwind": 10, "vue": 8, "part-time": 8, "contract": 5,
-    "remote-first": 8, "async": 5, "flexible": 4,
-}
-
-# نمونه Data Analyst:
-BOOST_KEYWORDS = {
-    "python": 20, "sql": 18, "power bi": 15, "tableau": 15,
-    "junior": 18, "entry level": 15, "associate": 12,
-    "data analyst": 12, "business intelligence": 10,
-    "excel": 8, "part-time": 8, "contract": 5,
-    "remote-first": 8, "async": 5, "flexible": 4,
-}
 ```
 
----
-
-### 🔄 خلاصه سریع
-
-| چی رو تغییر بدم؟ | کجا؟ | نیاز به تغییر کد؟ |
-|---|---|---|
-| مهارت‌ها | GitHub Secret → `USER_SKILLS` | ❌ نه |
-| عبارات جستجو | `bot.py` → `JSEARCH_QUERIES` | ✅ بله |
-| فیلتر آگهی‌های نامرتبط | `bot.py` → `BLACKLIST_KEYWORDS` | ✅ بله |
-| اولویت آگهی‌ها | `bot.py` → `BOOST_KEYWORDS` | ✅ بله |
-| رزومه برای AI | GitHub Secret → `USER_RESUME` | ❌ نه |
-
-> 🎁 **نکته:** اگه فقط `USER_SKILLS` رو ست کنی و بقیه رو همین‌جوری بذاری، ربات بازم کار می‌کنه ولی نتایج بهتری می‌ده اگه همه ۴ مورد رو تغییر بدی.
-
----
-
-## ⚙️ تنظیمات پیشرفته (اختیاری — برای حرفه‌ای‌ها)
-
-اگه ربات رو راه انداختی و حالا می‌خوای خفن‌ترش کنی:
-
----
-
-### 🧠 ۱. هوش مصنوعی برای نوشتن Cover Letter
-
-ربات می‌تونه با AI برای هر آگهی یه **Cover Letter اختصاصی** بنویسه تا شانس استخدامت بیشتر بشه.
-
-**راه‌اندازی:**
-1. یه کلید API **رایگان** از [Google Gemini](https://aistudio.google.com/apikey) بگیر
-2. فایل `setup_wizard.html` رو باز کن
-3. بخش **هوش مصنوعی** رو فعال کن → ارائه‌دهنده رو **Gemini** بذار → کلیدت رو وارد کن
-4. دوباره Secrets رو تولید کن و توی GitHub آپدیت کن
-
-**نکته مهم (ساخت Telegraph Token):**
-برای اینکه ربات بتونه متن های طولانی Cover Letter رو به شکل یه لینک تمیز و خوانا برات بفرسته، حتما به این توکن نیاز داری. گرفتنش فقط ۱۰ ثانیه زمان می بره:
-
-1. لینک زیر رو کپی کن و توی مرورگرت (مثل کروم) باز کن:
-   `https://api.telegra.ph/createAccount?short_name=SEOJobBot&author_name=SEO`
-2. یه صفحه سفید باز میشه که یه سری کد توشه. خروجی شبیه اینه:
-   ```json
-   {"ok":true,"result":{"short_name":"SEOJobBot","author_name":"SEO","author_url":"","access_token":"8a4b323f36c7cffb5c8332ca7d3dcwa2215cf979acd7403c2f34d6122345","auth_url":"..."}}
-از بین این متن ها، فقط عبارتی که جلوی access_token نوشته شده رو لازم داریم (توی مثال بالا میشه 8a4b323f36c7cffb5c8332ca7d3dcwa2215cf979acd7403c2f34d6122345).
-
-این کد رو کپی کن و توی فایل setup_wizard.html (بخش Telegraph Token) وارد کن.
-
-**می‌خوای از مدل‌های قوی‌تر استفاده کنی؟**
-با [TokenLB](https://tokenlb.net/sign-up?aff=yNLD) می‌تونی از Claude و GPT استفاده کنی. توی ویزارد ارائه‌دهنده رو بذار روی **TokenLB** و کلیدت رو وارد کن.
-
----
-
-### 👤 ۲. شخصی‌سازی Cover Letter
-
-توی فایل ویزارد یه بخش هست برای **مهارت‌ها و رزومه** شما.
-
-مهارت‌های خودت رو بنویس (مثلاً: `react, typescript, next.js, tailwind`)
-
-AI اینا رو می‌خونه و تو Cover Letter دقیقاً میگه که تو به درد همون کار می‌خوری!
-
----
-
-### 📊 ۳. ذخیره آگهی‌ها تو Google Sheets (تاریخچه کامل)
-
-اگه می‌خوای همه آگهی‌ها رو تو یه شیت گوگل ذخیره کنی و دسترسی راحت‌تر داشته باشی:
-
-1. برو به [Google Cloud Console](https://console.cloud.google.com)
-2. یه پروژه جدید بساز (اسمی که بخوای)
-3. **APIs & Services** → **Enable APIs** → سرچ کن و فعال کن:
-   - **Google Sheets API**
-   - **Google Drive API**
-4. برگرد به **Credentials** → **Create Credentials** → **Service Account**
-5. یه اسم بده → **Create and Continue** → نقش رو **Editor** بذار → **Done**
-6. روی Service Account ساخته‌شده کلیک کن → تب **Keys** → **Add Key** → **Create new key** → **JSON**
-7. فایل JSON دانلود میشه — **محتواش رو کپی کن** (کل متن)
-8. یه [Google Sheet جدید](https://sheets.google.com) بساز
-9. دکمه **Share** رو بزن → ایمیل Service Account رو (که توی JSON هست) اضافه کن → نقش **Editor** بده
-10. از URL شیت، بخش بعد از `/d/` تا قبل از `/edit` رو کپی کن (این ID شیته)
-11. توی GitHub Secrets اضافه کن:
-    - `GSHEET_CREDENTIALS` = کل محتوای فایل JSON
-    - `GSHEET_ID` = ID شیت
-
-از این به بعد، ربات همه آگهی‌ها رو توی شیت هم ذخیره می‌کنه.
-
----
-
-### ۲. جایگزین بخش منابع بیشتر (Cloudflare Worker)
-
-```markdown
-### ☁️ ۴. اضافه کردن منابع بیشتر (Cloudflare Worker)
-
-سایت هایی مثل **We Work Remotely** و **Remote OK** برای اینکه ربات بتونه اگهی هاشون رو بخونه، نیاز به یه واسطه دارن. کلادفلر این واسطه رو کاملا رایگان بهت میده. اگه هیچی از کدنویسی نمی دونی، فقط مو به مو این مراحل رو انجام بده:
-
-1. یه اکانت رایگان تو [Cloudflare](https://dash.cloudflare.com) بساز.
-2. از منوی سمت چپ اول روی **Build** و بعد **Workers and Pages** کلیک کن.
-3. وسط صفحه دکمه ابی **Create application** رو بزن.
-4. دکمه **Create Worker** (یا Start with Hello World) رو بزن.
-5. یه اسم برای پروژه انتخاب کن و **Deploy** رو بزن.
-6. تو صفحه جدید، بالا سمت چپ روی **Edit code** کلیک کن.
-7. کدهای پیش فرض وسط صفحه رو انتخاب کن و **کامل پاک کن**.
-8. فایل `cf_worker.js` (توی همین ریپازیتوری) رو باز کن، کل متنش رو کپی کن و همونجا Paste کن.
-9. بالا سمت راست دکمه **Deploy** رو بزن تا ذخیره بشه.
-10. برگرد به صفحه قبلی پروژه؛ سمت راست یه لینک بهت داده (شبیه `https://dark-shadow-430b.sadidi1434.workers.dev/`). این لینک رو کپی کن.
-11. این لینک رو توی فایل ویزارد (بخش ادرس Worker) وارد کن و Secrets رو توی گیت هاب اپدیت کن.
 ---
 
 ## ❓ مشکلات رایج
@@ -328,9 +279,8 @@ AI اینا رو می‌خونه و تو Cover Letter دقیقاً میگه که
 | پیام نمیاد | Actions → آخرین run → لاگ رو بخون |
 | Token not set | Secret رو چک کن — اسمش دقیقاً درست باشه |
 | آگهی کم میاد | طبیعیه! ممکنه بعضی روزها آگهی جدید نباشه |
-| Cover Letter نداره | `AI_PROVIDER` + `AI_API_KEY` + `TELEGRAPH_TOKEN` ست شدن؟ |
-| خطای AI | مشکل از سمت سرور ارائه‌دهنده — چند ساعت بعد خودش درست میشه |
-| آگهی‌های نامرتبط میاد | `BOOST_KEYWORDS` و `BLACKLIST_KEYWORDS` رو برای فیلد خودت تنظیم کن |
+| Cover Letter کار نمی‌کنه | مطمئن شو لینک آگهی معتبر باشه |
+| آگهی‌های نامرتبط میاد | `BOOST_KEYWORDS` و `BLACKLIST_KEYWORDS` رو تنظیم کن |
 
 ---
 
