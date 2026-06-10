@@ -1,6 +1,6 @@
 """
-SEO Job Scraper Bot v5.0
-========================
+Android Job Scraper Bot v5.0
+=============================
 منابع رایگان:
   • Remotive.com
   • Jobicy.com
@@ -88,43 +88,144 @@ MIN_FIT_SCORE    = 35
 MAX_JOB_AGE_DAYS = 7
 
 JSEARCH_QUERIES = {
-    1: ["Junior SEO remote", "Technical SEO remote", "SEO Python remote"],
-    2: ["SEO Content Editor remote", "WordPress SEO Specialist remote"],
-    3: ["on-page SEO specialist remote", "SEO copywriter remote"],
+    1: [
+        "Senior Android Developer remote",
+        "Android Engineer Kotlin remote",
+        "Android Jetpack Compose Developer remote",
+        "Android Developer remote",
+    ],
+    2: [
+        "Mobile Engineer Android Kotlin remote",
+        "Android Developer Clean Architecture remote",
+        "Kotlin Multiplatform Developer remote",
+    ],
+    3: [
+        "Mid-Level Android Developer remote",
+        "Mid-Level Mobile Developer remote",
+    ],
 }
 
 _DEFAULT_SKILLS = [
-    "python", "wordpress", "technical seo", "on-page seo",
-    "screaming frog", "ahrefs", "semrush", "google analytics",
-    "google search console", "content", "keyword research",
-    "html", "cms", "link building", "schema",
+    # Core Android
+    "kotlin",
+    "android sdk",
+    "jetpack compose",
+    "mvvm",
+    "mvi",
+    "clean architecture",
+    "multi-module architecture",
+    # Async & DI
+    "kotlin coroutines",
+    "flow",
+    "dagger hilt",
+    "koin",
+    # Networking & persistence
+    "retrofit",
+    "room",
+    "ktor",
+    # Testing & CI/CD
+    "junit",
+    "github actions",
+    "fastlane",
+    # Cross-platform
+    "kotlin multiplatform",
+    "flutter",
+    # Performance & tooling
+    "baseline profiles",
+    "firebase",
+    "crashlytics",
+    "gradle",
 ]
 _user_skills_env = os.environ.get("USER_SKILLS", "")
 MY_SKILLS = [s.strip().lower() for s in _user_skills_env.split(",") if s.strip()] if _user_skills_env else _DEFAULT_SKILLS
 
 BLACKLIST_KEYWORDS = [
-    "us residents only", "must reside in us", "must be located in us",
-    "must be based in the us", "must be based in us",
+    # Geographic/work authorization restrictions
+    "us residents only",
+    "must reside in us",
+    "must be located in us",
+    "must be based in the us",
     "must be authorized to work in the us",
-    "senior seo", "head of seo", "director of seo", "vp of",
-    "agency", "full stack", "fullstack",
+    "uk residents only",
+    "must reside in uk",
+    "must be based in the uk",
+    "eu residents only",
+    "must be based in eu",
+    "must be located in eu",
+    "right to work in",
+    "visa sponsorship not available",
+    "no sponsorship",
+    "legally authorized to work",
+    # Language restrictions
     "native english speaker only",
-    "10+ years", "8+ years", "7+ years",
+    "native english required",
+    "c2 english required",
+    # Overqualified / out of scope seniority
+    "principal engineer",
+    "director of engineering",
+    "head of mobile",
+    "head of android",
+    "vp of engineering",
+    "vp mobile",
+    "engineering manager",
+    "10+ years",
+    "9+ years",
+    "8+ years",
+    # Non-Android mobile
+    "ios only",
+    "swift required",
+    "objective-c required",
+    "react native only",
+    "xamarin",
+    # Non-mobile roles that may surface on keyword match
+    "backend only",
+    "devops only",
+    "data engineer",
+    "machine learning engineer",
+    "embedded systems",
 ]
 
 BOOST_KEYWORDS = {
-    "technical seo": 20, "python": 18, "wordpress": 15,
-    "junior": 18, "entry level": 15, "associate": 12,
-    "seo specialist": 12, "seo editor": 12, "content editor": 10,
-    "on-page": 10, "part-time": 8, "contract": 5,
-    "remote-first": 8, "async": 5, "flexible": 4,
+    # Core Android stack — highest signal, must-have match
+    "jetpack compose": 20,
+    "kotlin": 18,
+    "clean architecture": 18,
+    "android sdk": 16,
+    "kotlin coroutines": 15,
+    "multi-module": 14,
+    "mvvm": 12,
+    "mvi": 12,
+    "dagger hilt": 11,
+    "flow": 10,
+    # Seniority — matches Mohammad's 5yr profile
+    "senior": 18,
+    "lead": 15,
+    "staff": 12,
+    "mid-level": 10,
+    # Domain experience — direct resume match
+    "fintech": 14,
+    "edtech": 12,
+    "iot": 10,
+    # Cross-platform bonus
+    "kotlin multiplatform": 13,
+    "flutter": 10,
+    # CI/CD & testing — differentiators on resume
+    "ci/cd": 10,
+    "github actions": 9,
+    "fastlane": 8,
+    "baseline profiles": 8,
+    # Work style
+    "remote-first": 8,
+    "async": 6,
+    "flexible": 4,
+    "contract": 4,
 }
 
-_SKILL_PATTERNS   = {s: re.compile(r"\b" + re.escape(s) + r"\b", re.I) for s in MY_SKILLS}
-_BOOST_PATTERNS   = {kw: re.compile(r"\b" + re.escape(kw) + r"\b", re.I) for kw in BOOST_KEYWORDS}
+_SKILL_PATTERNS     = {s: re.compile(r"\b" + re.escape(s) + r"\b", re.I) for s in MY_SKILLS}
+_BOOST_PATTERNS     = {kw: re.compile(r"\b" + re.escape(kw) + r"\b", re.I) for kw in BOOST_KEYWORDS}
 _BLACKLIST_PATTERNS = {kw: re.compile(r"\b" + re.escape(kw.lower()) + r"\b", re.I) for kw in BLACKLIST_KEYWORDS}
 
-# ── Prompt Template ─────────────────────────────────────────────────────────
+# ── Prompt Template ──────────────────────────────────────────────────────────
 
 CL_PROMPT_TEMPLATE = os.environ.get("CL_PROMPT", "")
 
@@ -142,9 +243,36 @@ def load_prompt_template() -> str:
                     return content
     except Exception as e:
         log.warning(f"Could not load prompt.txt: {e}")
-    return "Write a short, professional cover letter for the '{title}' position at '{company}'. Focus on my technical SEO skills. Job link: {url}"
+    # Default: Android-focused cover letter prompt
+    return (
+        "You are an expert technical recruiter and career coach specializing in mobile engineering roles.\n\n"
+        "Write a compelling, professional cover letter for the '{title}' position at '{company}'.\n\n"
+        "## Candidate Profile\n"
+        "Name: Mohammad Noorzade\n"
+        "Experience: 5+ years Android Developer (fintech, IoT, ed-tech)\n"
+        "Top skills: Jetpack Compose, Clean Architecture, Kotlin Coroutines, Multi-module Gradle, "
+        "Dagger-Hilt, CI/CD (GitHub Actions + Fastlane), Baseline Profiles, Flutter\n"
+        "Key achievements:\n"
+        "- Architected Android app from scratch for a Duolingo-style app with 500k+ users\n"
+        "- Cut failed download rates ~40% via custom encrypted download manager\n"
+        "- Maintained 99%+ crash-free session rate across 500k+ installs\n"
+        "- Improved cold start time ~35% on mid-range devices\n"
+        "- Reduced release cycle from 3hrs to under 20min via CI/CD pipelines\n"
+        "- Led app recovery post-Play Store delisting → 3x retention in 30 days\n\n"
+        "## Job Context\n"
+        "Fetch and analyze the job posting at: {url}\n"
+        "Extract required skills, preferred qualifications, tech stack, and company tone.\n\n"
+        "## Letter Requirements\n"
+        "1. Opening hook — reference the company product or a real Android challenge in their domain\n"
+        "2. Technical value — match 2-3 of Mohammad's skills directly to the job posting\n"
+        "3. Impact — pick the single most relevant quantified achievement above\n"
+        "4. Culture fit — one line connecting his work style to their mission\n"
+        "5. Call to action — offer to share GitHub or discuss a technical decision\n\n"
+        "Style: technically credible, no buzzwords, 220-250 words, first person as Mohammad.\n"
+        "Output: final cover letter only, ready to send."
+    )
 
-# ── Seen Jobs Cache ─────────────────────────────────────────────────────────
+# ── Seen Jobs Cache ──────────────────────────────────────────────────────────
 
 def load_seen_jobs() -> OrderedDict:
     seen = OrderedDict()
@@ -164,7 +292,7 @@ def save_seen_jobs(seen: OrderedDict) -> None:
     SEEN_JOBS_FILE.write_text("\n".join(ids), encoding="utf-8")
     log.info(f"Saved {len(ids)} IDs to cache")
 
-# ── Fit Score ───────────────────────────────────────────────────────────────
+# ── Fit Score ────────────────────────────────────────────────────────────────
 
 def calculate_fit_score(job: dict) -> tuple:
     score = 0
@@ -182,24 +310,37 @@ def calculate_fit_score(job: dict) -> tuple:
             matched_skills.append(skill)
             score += 7
 
-    if re.search(r"\bseo\b", title):
-        score += 12
+    # Android-specific title boosts
+    if re.search(r"\bandroid\b", title):
+        score += 15
+    if re.search(r"\bkotlin\b", title):
+        score += 10
+    if re.search(r"\bmobile\b", title):
+        score += 8
+
     if job.get("salary"):
         score += 10
     if job.get("remote"):
         score += 8
-    if any(re.search(r"\b" + w + r"\b", title) for w in ["junior", "associate", "entry", "jr"]):
+
+    # Seniority match bonus (5yr experience)
+    if any(re.search(r"\b" + w + r"\b", title) for w in ["senior", "staff", "lead", "mid-level"]):
         score += 10
 
     return min(score, 100), matched_skills[:4]
 
-# ── Free Sources ────────────────────────────────────────────────────────────
+# ── Free Sources ─────────────────────────────────────────────────────────────
+
+ANDROID_TERMS = [
+    "android", "kotlin", "jetpack compose", "mobile developer",
+    "mobile engineer", "kotlin multiplatform", "flutter",
+]
 
 def fetch_remotive() -> list:
     endpoints = [
-        "https://remotive.com/api/remote-jobs?category=seo&limit=20",
-        "https://remotive.com/api/remote-jobs?search=technical+seo&limit=10",
-        "https://remotive.com/api/remote-jobs?search=seo+content&limit=10",
+        "https://remotive.com/api/remote-jobs?category=software-dev&limit=50",
+        "https://remotive.com/api/remote-jobs?search=android+developer&limit=20",
+        "https://remotive.com/api/remote-jobs?search=kotlin+developer&limit=20",
     ]
     results = []
     for url in endpoints:
@@ -207,6 +348,10 @@ def fetch_remotive() -> list:
             resp = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
             resp.raise_for_status()
             for j in resp.json().get("jobs", []):
+                title = (j.get("title") or "").lower()
+                desc  = (j.get("description") or "").lower()[:300]
+                if not any(t in title or t in desc for t in ANDROID_TERMS):
+                    continue
                 results.append({
                     "id":           f"remotive_{j.get('id', '')}",
                     "title":        j.get("title", ""),
@@ -228,9 +373,12 @@ def fetch_remotive() -> list:
 
 def fetch_jobicy() -> list:
     endpoints = [
-        "https://jobicy.com/api/v2/remote-jobs?tag=seo&count=20",
-        "https://jobicy.com/api/v2/remote-jobs?tag=content-marketing&count=15",
-        "https://jobicy.com/api/v2/remote-jobs?tag=wordpress&count=10",
+        "https://jobicy.com/api/v2/remote-jobs?tag=android&count=20",
+        "https://jobicy.com/api/v2/remote-jobs?tag=kotlin&count=20",
+        "https://jobicy.com/api/v2/remote-jobs?tag=mobile&count=20",
+        "https://jobicy.com/api/v2/remote-jobs?tag=flutter&count=15",
+        "https://jobicy.com/api/v2/remote-jobs?tag=mobile-development&count=15",
+        "https://jobicy.com/api/v2/remote-jobs?tag=fintech&count=10",
     ]
     results = []
     for url in endpoints:
@@ -262,9 +410,12 @@ def fetch_jobicy() -> list:
     return results
 
 def fetch_arbeitnow() -> list:
-    SEO_TERMS = ["seo", "search engine optimization", "content editor", "technical seo", "wordpress seo"]
     try:
-        resp = requests.get("https://arbeitnow.com/api/job-board-api", timeout=15, headers={"User-Agent": "Mozilla/5.0"})
+        resp = requests.get(
+            "https://arbeitnow.com/api/job-board-api",
+            timeout=15,
+            headers={"User-Agent": "Mozilla/5.0"},
+        )
         resp.raise_for_status()
         results = []
         for j in resp.json().get("data", []):
@@ -272,7 +423,7 @@ def fetch_arbeitnow() -> list:
                 continue
             title = (j.get("title") or "").lower()
             desc  = (j.get("description") or "").lower()[:300]
-            if not any(t in title or t in desc for t in SEO_TERMS):
+            if not any(t in title or t in desc for t in ANDROID_TERMS):
                 continue
             results.append({
                 "id":           f"arbeitnow_{j.get('slug', '')}",
@@ -297,13 +448,15 @@ def fetch_adzuna() -> list:
     if not ADZUNA_APP_ID or not ADZUNA_API_KEY:
         return []
     results = []
-    for q in ["seo", "technical seo", "seo specialist"]:
+    for q in ["android developer", "kotlin developer", "mobile engineer android"]:
         try:
             resp = requests.get(
-                f"https://api.adzuna.com/v1/api/jobs/us/search/1",
-                params={"app_id": ADZUNA_APP_ID, "app_key": ADZUNA_API_KEY,
-                        "what": q, "what_or": "remote", "max_days_old": 7,
-                        "results_per_page": 15, "content-type": "application/json"},
+                "https://api.adzuna.com/v1/api/jobs/us/search/1",
+                params={
+                    "app_id": ADZUNA_APP_ID, "app_key": ADZUNA_API_KEY,
+                    "what": q, "what_or": "remote", "max_days_old": 7,
+                    "results_per_page": 15, "content-type": "application/json",
+                },
                 timeout=15,
             )
             resp.raise_for_status()
@@ -328,12 +481,11 @@ def fetch_adzuna() -> list:
     return results
 
 def fetch_findwork() -> list:
-    SEO_TERMS = ["seo", "search engine", "content editor", "wordpress", "technical seo", "organic", "keyword"]
     try:
         resp = requests.get(
             "https://findwork.dev/api/jobs/",
-            params={"search": "seo", "remote": "true", "order_by": "-date_posted"},
-            headers={"User-Agent": "Mozilla/5.0 (compatible; SEOJobBot/5.0)"},
+            params={"search": "android kotlin", "remote": "true", "order_by": "-date_posted"},
+            headers={"User-Agent": "Mozilla/5.0 (compatible; AndroidJobBot/5.0)"},
             timeout=15,
         )
         if resp.status_code == 403:
@@ -344,7 +496,7 @@ def fetch_findwork() -> list:
         for j in resp.json().get("results", []):
             title = (j.get("role") or "").lower()
             desc  = (j.get("text") or "").lower()[:500]
-            if not any(t in title or t in desc for t in SEO_TERMS):
+            if not any(t in title or t in desc for t in ANDROID_TERMS):
                 continue
             results.append({
                 "id":           f"findwork_{j.get('id', '')}",
@@ -372,7 +524,7 @@ def fetch_cloudflare_worker() -> list:
     if not worker_url.endswith("/jobs"):
         worker_url += "/jobs"
     try:
-        resp = requests.get(worker_url, headers={"User-Agent": "SEOJobBot/5.0"}, timeout=20)
+        resp = requests.get(worker_url, headers={"User-Agent": "AndroidJobBot/5.0"}, timeout=20)
         if resp.status_code in (401, 404):
             log.error(f"CF Worker: {resp.status_code}")
             return []
@@ -403,7 +555,7 @@ def fetch_cloudflare_worker() -> list:
         log.error(f"CF Worker error: {e}")
         return []
 
-# ── JSearch API (اختیاری) ───────────────────────────────────────────────────
+# ── JSearch API (اختیاری) ────────────────────────────────────────────────────
 
 def _should_run_p3() -> bool:
     return datetime.now(timezone.utc).day % 2 == 0
@@ -465,7 +617,7 @@ def _normalize_jsearch(j: dict) -> dict:
         "location":     loc,
     }
 
-# ── Filters ─────────────────────────────────────────────────────────────────
+# ── Filters ──────────────────────────────────────────────────────────────────
 
 def is_blacklisted(job: dict) -> tuple:
     text = f"{(job.get('title') or '').lower()} {(job.get('description') or '')[:2000].lower()}"
@@ -484,7 +636,7 @@ def is_too_old(job: dict) -> bool:
     except Exception:
         return False
 
-# ── Telegram ────────────────────────────────────────────────────────────────
+# ── Telegram ──────────────────────────────────────────────────────────────────
 
 def _score_bar(score: int) -> str:
     filled = round(score / 10)
@@ -500,7 +652,7 @@ def format_job(job: dict, score: int, skills: list) -> str:
     loc     = html.escape(job.get("location") or "Remote")
 
     lines = [
-        f"💼 <b>{title}</b>",
+        f"📱 <b>{title}</b>",
         f"🏢 {company}",
         f"📍 {loc}",
     ]
@@ -568,7 +720,7 @@ def send_telegram(text: str, reply_markup: dict = None, _retries: int = 3) -> bo
             return False
     return False
 
-# ── Google Sheets ────────────────────────────────────────────────────────────
+# ── Google Sheets ─────────────────────────────────────────────────────────────
 
 def get_sheets_client():
     if not SHEETS_AVAILABLE or not GSHEET_CREDENTIALS or not GSHEET_ID:
@@ -608,11 +760,11 @@ def batch_append_to_sheet(client, rows: list) -> None:
     except Exception as e:
         log.error(f"Sheet batch append error: {e}")
 
-# ── Main ─────────────────────────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    log.info(f"=== SEO Job Scraper v5.0 started at {now} ===")
+    log.info(f"=== Android Job Scraper v5.0 started at {now} ===")
 
     seen_jobs = load_seen_jobs()
     sheets = get_sheets_client()
@@ -621,7 +773,7 @@ def main() -> None:
     raw_jobs = []
     source_counts = {}
 
-    # ── منابع رایگان ─────────────────────────────────────────────────────────
+    # ── منابع رایگان ──────────────────────────────────────────────────────────
     for fn, name in [
         (fetch_remotive, "Remotive"),
         (fetch_jobicy, "Jobicy"),
@@ -638,7 +790,7 @@ def main() -> None:
             log.error(f"{name} failed: {e}\n{traceback.format_exc()}")
             source_counts[name] = 0
 
-    # ── JSearch (اختیاری) ────────────────────────────────────────────────────
+    # ── JSearch (اختیاری) ─────────────────────────────────────────────────────
     jsearch_total = 0
     for priority in sorted(JSEARCH_QUERIES.keys()):
         if priority == 3 and not _should_run_p3():
@@ -654,7 +806,7 @@ def main() -> None:
             time.sleep(1.5)
     source_counts["JSearch"] = jsearch_total
 
-    # ── فیلتر + امتیازدهی ────────────────────────────────────────────────────
+    # ── فیلتر + امتیازدهی ─────────────────────────────────────────────────────
     seen_ids = set()
     title_keys = set()
     stats = {"blacklisted": 0, "seen": 0, "old": 0, "low_score": 0}
@@ -705,14 +857,14 @@ def main() -> None:
         f"Seen: {stats['seen']} | Old: {stats['old']} | Low: {stats['low_score']}"
     )
 
-    # ── ارسال به تلگرام ──────────────────────────────────────────────────────
+    # ── ارسال به تلگرام ────────────────────────────────────────────────────────
     active_sources = {k: v for k, v in source_counts.items() if v > 0}
     sources_line = " | ".join(f"{k}: {v}" for k, v in active_sources.items())
 
     if not qualified:
         send_telegram(
             f"🔍 <b>Daily Report</b>\n📅 {now}\n\n"
-            f"No qualified jobs found.\n\n"
+            f"No qualified Android jobs found.\n\n"
             f"📌 {sources_line or 'No sources'}\n"
             f"⛔ {stats['blacklisted']} filtered | "
             f"📉 {stats['low_score']} low score | "
@@ -723,7 +875,7 @@ def main() -> None:
         return
 
     send_telegram(
-        f"🤖 <b>New SEO Jobs</b>\n"
+        f"📱 <b>New Android Jobs</b>\n"
         f"📅 {now}\n\n"
         f"✅ <b>{len(qualified)}</b> jobs (sorted by fit)\n"
         f"⛔ {stats['blacklisted']} filtered | "
