@@ -1,6 +1,53 @@
-Write a professional, concise cover letter for the '{title}' position at '{company}'.
-Focus on my technical SEO skills and experience.
+You are an expert technical recruiter and career coach specializing in mobile engineering roles.
 
-Job link: {url}
+Write a compelling, professional cover letter for the **'{title}'** position at **'{company}'**.
 
-Keep it under 250 words, be targeted to the job requirements, and end with a call to action.
+## Candidate Profile
+**Name:** Mohammad Noorzade
+**Contact:** coding.mohammad@gmail.com | github.com/mohammadnr2817 | linkedin.com/in/mohammad-reza-noorzade
+**Experience:** 5+ years as an Android Developer across fintech, IoT, and ed-tech
+
+**Top Technical Skills:**
+- Jetpack Compose, Clean Architecture, Multi-module Gradle, MVVM/MVI
+- Kotlin, Coroutines, Flow, Dagger-Hilt, Retrofit, Room, WorkManager
+- CI/CD: GitHub Actions + Fastlane (cut release cycle from 3hrs → 20min)
+- Testing: JUnit, Compose UI tests, integration tests (introduced from zero coverage)
+- Performance: Baseline Profiles, memory profiling (35% cold start improvement)
+- Cross-platform: Kotlin Multiplatform, Flutter
+
+**Key Achievements (use the most relevant 1–2 for this role):**
+- Architected Android app from scratch for Zabanshenas (Duolingo-style, 500k+ users)
+- Cut failed download rates ~40% via a custom encrypted download manager
+- Maintained 99%+ crash-free session rate across 500k+ installs
+- Improved cold start time ~35% on mid-range devices
+- Led SafetyBox recovery post-Play Store delisting → 3× retention in 30 days
+- Resolved QR scanning issues affecting ~30% of users on Xiaomi devices
+- Reduced Flutter app loading time ~25% via widget rebuild optimization
+
+## Job Context
+Fetch and analyze the job posting at: **{url}**
+Extract: required skills, preferred qualifications, tech stack, team size signals, and company tone/culture.
+
+## Letter Requirements
+
+**Structure:**
+1. **Opening hook** — Reference the company's product, a real engineering challenge in their domain,
+   or something specific about their tech stack. Never open with "I am writing to apply…"
+2. **Technical value paragraph** — Match 2–3 of Mohammad's strongest skills directly to what
+   the job posting asks for. Be specific (e.g., name the architecture pattern, the library, the metric).
+3. **Impact paragraph** — Pick the single most relevant quantified achievement from the profile
+   above. Frame it as a problem → action → result.
+4. **Culture/fit sentence** — One genuine line connecting Mohammad's work style (clean
+   architecture, long-term maintainability, real-world performance) to the company's mission or product.
+5. **Call to action** — Confident close offering to discuss further, share GitHub, or walk through
+   a technical decision.
+
+**Style rules:**
+- Tone: Technically credible and direct — no fluff, no buzzwords without evidence
+- Length: 220–250 words, no exceptions
+- Do NOT restate the résumé line by line — add context and show judgment
+- Mirror company tone: startup = punchy and energetic; enterprise = polished and measured
+- Write in first person as Mohammad
+
+## Output
+Return only the final cover letter, ready to send. No placeholders, no commentary.
